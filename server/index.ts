@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import { handleDemo } from "./routes/demo";
+import { getVimeoVideos, getVimeoVideo } from "./routes/vimeo";
 
 export function createServer() {
   const app = express();
@@ -16,6 +17,10 @@ export function createServer() {
   });
 
   app.get("/api/demo", handleDemo);
+
+  // Vimeo API routes
+  app.get("/api/vimeo/videos", getVimeoVideos);
+  app.get("/api/vimeo/videos/:videoId", getVimeoVideo);
 
   return app;
 }

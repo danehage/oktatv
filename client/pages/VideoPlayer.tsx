@@ -1,13 +1,26 @@
 import { useParams, Link } from "react-router-dom";
-import { ArrowLeft, Share2, ThumbsUp, Download, Clock, Eye, Calendar } from "lucide-react";
-import { mockVideos } from "../../shared/types";
+import { ArrowLeft, Share2, ThumbsUp, Download, Clock, Eye, Calendar, Loader2 } from "lucide-react";
+import { useVimeoVideos } from "../hooks/useVimeoVideos";
 import { Button } from "../components/ui/button";
 import { Badge } from "../components/ui/badge";
 import { VideoRow } from "../components/VideoRow";
 
 export default function VideoPlayer() {
   const { videoId } = useParams();
-  const video = mockVideos.find(v => v.id === videoId);
+  const { videos, loading } = useVimeoVideos();
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center space-y-4">
+          <Loader2 className="w-8 h-8 animate-spin text-okta-blue mx-auto" />
+          <h2 className="text-xl font-semibold text-foreground">Loading video...</h2>
+        </div>
+      </div>
+    );
+  }
+
+  const video = videos.find(v => v.id === videoId);
 
   if (!video) {
     return (

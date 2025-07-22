@@ -17,6 +17,11 @@ export function HeroSection({ featuredVideo }: HeroSectionProps) {
           src={featuredVideo.heroImage}
           alt={featuredVideo.title}
           className="w-full h-full object-cover"
+          onError={(e) => {
+            // Fallback to high-quality hero image if original fails
+            const target = e.target as HTMLImageElement;
+            target.src = `https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=1920&h=1080&fit=crop&q=90`;
+          }}
         />
         {/* Overlay Gradient */}
         <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />

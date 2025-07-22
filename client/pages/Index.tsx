@@ -11,20 +11,7 @@ export default function Index() {
 
   // Loading state
   if (loading) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-center space-y-4">
-          <Loader2 className="w-8 h-8 animate-spin text-okta-blue mx-auto" />
-          <h2 className="text-xl font-semibold text-foreground">Loading OktaTV</h2>
-          <p className="text-muted-foreground">Fetching video data from Vimeo...</p>
-          {fetchProgress && (
-            <p className="text-sm text-muted-foreground">
-              Loaded {fetchProgress.fetched} of {fetchProgress.total} videos
-            </p>
-          )}
-        </div>
-      </div>
-    );
+    return <LoadingState progress={fetchProgress} />;
   }
 
   // Error state with fallback option

@@ -1,0 +1,48 @@
+# Define the build steps
+steps:
+# Step 1: Build the Docker image from your Dockerfile
+# This uses the 'docker' builder to create a Docker image.
+# The image is tagged with a unique name that includes your project ID,
+# the Artifact Registry repository name, your service name, and the Git commit SHA.
+- name: 'gcr.io/cloud-builders/docker'
+  args:
+    - 'build'
+    - '-t' # Tag the image
+    - '$_GCR_HOSTNAME/$PROJECT_ID/$_REPO_NAME/$_SERVICE_NAME:$COMMIT_SHA'
+    - '.' # Build context is the current directory (where Dockerfile is)
+  id: Build # Unique ID for this step
+
+# Step 2: Push the built Docker image to Google Artifact Registry
+# This makes your image available for Cloud Run to deploy.
+- name: 'gcr.io/cloud-builders/docker'
+  args:
+    - 'push'
+    - '$_GCR_HOSTNAME/$PROJECT_ID/$_REPO_NAME/$_SERVICE_NAME:$COMMIT_SHA'
+  id: Push # Unique ID for this step
+
+# Step 3: Deploy the new Docker image to Google Cloud Run
+# This uses the gcloud SDK builder to deploy the image to your Cloud Run service.
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  args:
+    - gcloud
+    - run
+    - deploy
+    - $_SERVICE_NAME # The name of your Cloud Run service
+    - '--image=$_GCR_HOSTNAME/$PROJECT_ID/$_REPO_NAME/$_SERVICE_NAME:$COMMIT_SHA' # The image to deploy
+    - '--region=$_DEPLOY_REGION' # The GCP region where your service will run
+    - '--platform=managed' # Specifies Cloud Run managed environment
+    - '--allow-unauthenticated' # Allows public access to your web app (remove if you need authentication)
+    - '--port=8080' # Ensure this matches the EXPOSE port in your Dockerfile and your Express app
+  id: Deploy # Unique ID for this step
+
+# Specify the Docker image that will be produced by this build
+images:
+- '$_GCR_HOSTNAME/$PROJECT_ID/$_REPO_NAME/$_SERVICE_NAME:$COMMIT_SHA'
+
+# Define substitution variables. These will be automatically filled by Cloud Build or can be customized.
+# You MUST replace the placeholder values below with your actual information.
+substitutions:
+  _GCR_HOSTNAME: <YOUR_ARTIFACT_REGISTRY_REGION>-docker.pkg.dev # Example: us-central1-docker.pkg.dev
+  _REPO_NAME: oktatv-app-repo # The name you choose for your Artifact Registry repository
+  _SERVICE_NAME: oktatv-web-app # The desired name for your Cloud Run service (e.g., your app's name)
+  _DEPLOY_REGION: <YOUR_ARTIFACT_REGISTRY_REGION> # The GCP region for your Cloud Run service (e.g., us-central1)

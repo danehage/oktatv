@@ -36,7 +36,7 @@ export default function VideoPlayer() {
   }
 
   // Related videos from same category
-  const relatedVideos = mockVideos
+  const relatedVideos = videos
     .filter(v => v.id !== video.id && v.category.id === video.category.id)
     .slice(0, 6);
 

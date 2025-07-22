@@ -25,10 +25,22 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/watch/:videoId" element={<VideoPlayer />} />
-            <Route path="/trainings" element={<PlaceholderPage title="Training Sessions" />} />
-            <Route path="/townhalls" element={<PlaceholderPage title="Town Halls" />} />
-            <Route path="/onboarding" element={<PlaceholderPage title="Onboarding" />} />
-            <Route path="/my-videos" element={<PlaceholderPage title="My Videos" />} />
+            <Route
+              path="/trainings"
+              element={<PlaceholderPage title="Training Sessions" />}
+            />
+            <Route
+              path="/townhalls"
+              element={<PlaceholderPage title="Town Halls" />}
+            />
+            <Route
+              path="/onboarding"
+              element={<PlaceholderPage title="Onboarding" />}
+            />
+            <Route
+              path="/my-videos"
+              element={<PlaceholderPage title="My Videos" />}
+            />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

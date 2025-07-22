@@ -19,32 +19,32 @@ export function Navigation() {
 
           {/* Navigation Links */}
           <div className="hidden md:flex items-center space-x-8">
-            <Link 
-              to="/" 
+            <Link
+              to="/"
               className="text-sm font-medium text-foreground hover:text-okta-blue transition-colors"
             >
               Home
             </Link>
-            <Link 
-              to="/trainings" 
+            <Link
+              to="/trainings"
               className="text-sm font-medium text-muted-foreground hover:text-okta-blue transition-colors"
             >
               Training
             </Link>
-            <Link 
-              to="/townhalls" 
+            <Link
+              to="/townhalls"
               className="text-sm font-medium text-muted-foreground hover:text-okta-blue transition-colors"
             >
               Town Halls
             </Link>
-            <Link 
-              to="/onboarding" 
+            <Link
+              to="/onboarding"
               className="text-sm font-medium text-muted-foreground hover:text-okta-blue transition-colors"
             >
               Onboarding
             </Link>
-            <Link 
-              to="/my-videos" 
+            <Link
+              to="/my-videos"
               className="text-sm font-medium text-muted-foreground hover:text-okta-blue transition-colors"
             >
               My Videos

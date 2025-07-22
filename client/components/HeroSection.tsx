@@ -32,8 +32,8 @@ export function HeroSection({ featuredVideo }: HeroSectionProps) {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-2xl">
             {/* Category Badge */}
-            <Badge 
-              variant="outline" 
+            <Badge
+              variant="outline"
               className="mb-4 border-okta-blue text-okta-blue bg-okta-blue/10 backdrop-blur-sm"
             >
               Featured • {featuredVideo.category.name}
@@ -67,15 +67,18 @@ export function HeroSection({ featuredVideo }: HeroSectionProps) {
             {/* Action Buttons */}
             <div className="flex flex-col sm:flex-row gap-4">
               <Link to={`/watch/${featuredVideo.id}`}>
-                <Button size="lg" className="bg-okta-blue hover:bg-okta-blue-dark text-white px-8">
+                <Button
+                  size="lg"
+                  className="bg-okta-blue hover:bg-okta-blue-dark text-white px-8"
+                >
                   <Play className="w-5 h-5 mr-2 fill-white" />
                   Watch Now
                 </Button>
               </Link>
-              
-              <Button 
-                variant="outline" 
-                size="lg" 
+
+              <Button
+                variant="outline"
+                size="lg"
                 className="border-white/30 text-white hover:bg-white/10 backdrop-blur-sm px-8"
               >
                 <Info className="w-5 h-5 mr-2" />

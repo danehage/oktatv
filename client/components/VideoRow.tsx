@@ -15,23 +15,23 @@ export function VideoRow({ title, videos }: VideoRowProps) {
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
 
-  const handleScroll = (direction: 'left' | 'right') => {
+  const handleScroll = (direction: "left" | "right") => {
     if (!scrollContainerRef.current) return;
 
     const scrollAmount = 400;
     const container = scrollContainerRef.current;
-    
-    if (direction === 'left') {
-      container.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+
+    if (direction === "left") {
+      container.scrollBy({ left: -scrollAmount, behavior: "smooth" });
     } else {
-      container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+      container.scrollBy({ left: scrollAmount, behavior: "smooth" });
     }
 
     // Update scroll button states
     setTimeout(() => {
       setCanScrollLeft(container.scrollLeft > 0);
       setCanScrollRight(
-        container.scrollLeft < container.scrollWidth - container.clientWidth
+        container.scrollLeft < container.scrollWidth - container.clientWidth,
       );
     }, 300);
   };
@@ -50,9 +50,9 @@ export function VideoRow({ title, videos }: VideoRowProps) {
           variant="ghost"
           size="sm"
           className={`absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-background/80 backdrop-blur-sm hover:bg-background/90 transition-opacity ${
-            canScrollLeft ? 'opacity-100' : 'opacity-0 pointer-events-none'
+            canScrollLeft ? "opacity-100" : "opacity-0 pointer-events-none"
           }`}
-          onClick={() => handleScroll('left')}
+          onClick={() => handleScroll("left")}
         >
           <ChevronLeft className="w-5 h-5" />
         </Button>
@@ -62,9 +62,9 @@ export function VideoRow({ title, videos }: VideoRowProps) {
           variant="ghost"
           size="sm"
           className={`absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-background/80 backdrop-blur-sm hover:bg-background/90 transition-opacity ${
-            canScrollRight ? 'opacity-100' : 'opacity-0 pointer-events-none'
+            canScrollRight ? "opacity-100" : "opacity-0 pointer-events-none"
           }`}
-          onClick={() => handleScroll('right')}
+          onClick={() => handleScroll("right")}
         >
           <ChevronRight className="w-5 h-5" />
         </Button>
@@ -73,12 +73,13 @@ export function VideoRow({ title, videos }: VideoRowProps) {
         <div
           ref={scrollContainerRef}
           className="flex space-x-4 overflow-x-auto scrollbar-hide pb-4"
-          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
           onScroll={(e) => {
             const container = e.currentTarget;
             setCanScrollLeft(container.scrollLeft > 0);
             setCanScrollRight(
-              container.scrollLeft < container.scrollWidth - container.clientWidth
+              container.scrollLeft <
+                container.scrollWidth - container.clientWidth,
             );
           }}
         >

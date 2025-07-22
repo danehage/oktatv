@@ -35,7 +35,7 @@ interface VideoMetadata {
 function formatDuration(seconds: number): string {
   const minutes = Math.floor(seconds / 60);
   const remainingSeconds = seconds % 60;
-  return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+  return `${minutes}:${remainingSeconds.toString().padStart(2, "0")}`;
 }
 
 interface VimeoOEmbedData {
@@ -58,30 +58,31 @@ async function fetchVimeoVideo(videoId: string): Promise<VideoMetadata | null> {
       const oembedData: VimeoOEmbedData = await oembedResponse.json();
 
       // Get higher resolution thumbnail by modifying the URL
-      let thumbnail = oembedData.thumbnail_url || '';
+      let thumbnail = oembedData.thumbnail_url || "";
       if (thumbnail) {
         // Replace the size parameters in Vimeo thumbnail URL for higher quality
         thumbnail = thumbnail
-          .replace(/_\d+x\d+/, '_800x450')  // Replace size with 800x450
-          .replace(/\?.*$/, '');  // Remove query parameters that might limit quality
+          .replace(/_\d+x\d+/, "_800x450") // Replace size with 800x450
+          .replace(/\?.*$/, ""); // Remove query parameters that might limit quality
       }
 
       return {
         id: videoId,
         title: oembedData.title || `Video ${videoId}`,
-        description: oembedData.description || 'No description available.',
+        description: oembedData.description || "No description available.",
         thumbnail: thumbnail,
         duration: formatDuration(oembedData.duration || 0),
         views: Math.floor(Math.random() * 1000) + 100, // Random views since oembed doesn't provide this
-        publishedAt: oembedData.upload_date || new Date().toISOString().split('T')[0],
-        presenter: oembedData.author_name || 'Unknown'
+        publishedAt:
+          oembedData.upload_date || new Date().toISOString().split("T")[0],
+        presenter: oembedData.author_name || "Unknown",
       };
     }
 
     // Fallback: try the main Vimeo API (may require auth for private videos)
     const apiResponse = await fetch(`https://api.vimeo.com/videos/${videoId}`, {
       headers: {
-        'Accept': 'application/vnd.vimeo.*+json;version=3.4',
+        Accept: "application/vnd.vimeo.*+json;version=3.4",
       },
     });
 
@@ -89,25 +90,27 @@ async function fetchVimeoVideo(videoId: string): Promise<VideoMetadata | null> {
       const data: VimeoVideoData = await apiResponse.json();
 
       // Get the best quality thumbnail (largest size)
-      const thumbnail = data.pictures?.sizes?.length > 0
-        ? data.pictures.sizes[data.pictures.sizes.length - 1].link
-        : '';
+      const thumbnail =
+        data.pictures?.sizes?.length > 0
+          ? data.pictures.sizes[data.pictures.sizes.length - 1].link
+          : "";
 
       return {
         id: videoId,
         title: data.name || `Video ${videoId}`,
-        description: data.description || 'No description available.',
+        description: data.description || "No description available.",
         thumbnail: thumbnail,
         duration: formatDuration(data.duration || 0),
         views: data.stats?.plays || 0,
-        publishedAt: data.created_time ? new Date(data.created_time).toISOString().split('T')[0] : new Date().toISOString().split('T')[0],
-        presenter: data.user?.name || 'Unknown'
+        publishedAt: data.created_time
+          ? new Date(data.created_time).toISOString().split("T")[0]
+          : new Date().toISOString().split("T")[0],
+        presenter: data.user?.name || "Unknown",
       };
     }
 
     console.error(`Failed to fetch video ${videoId} from both oembed and API`);
     return null;
-
   } catch (error) {
     console.error(`Error fetching video ${videoId}:`, error);
     return null;
@@ -117,46 +120,47 @@ async function fetchVimeoVideo(videoId: string): Promise<VideoMetadata | null> {
 export const getVimeoVideos: RequestHandler = async (req, res) => {
   try {
     const videoIds = [
-      '1096708225',
-      '1096259913', 
-      '1096259876',
-      '1096265123',
-      '1023285402',
-      '1096259851',
-      '1103160254',
-      '1103161104',
-      '1053808307',
-      '1051277253',
-      '1051694947'
+      "1096708225",
+      "1096259913",
+      "1096259876",
+      "1096265123",
+      "1023285402",
+      "1096259851",
+      "1103160254",
+      "1103161104",
+      "1053808307",
+      "1051277253",
+      "1051694947",
     ];
 
-    console.log('Fetching Vimeo video data...');
-    
+    console.log("Fetching Vimeo video data...");
+
     // Fetch all videos with a delay between requests to avoid rate limiting
     const videoPromises = videoIds.map(async (videoId, index) => {
       // Add a small delay between requests
-      await new Promise(resolve => setTimeout(resolve, index * 100));
+      await new Promise((resolve) => setTimeout(resolve, index * 100));
       return fetchVimeoVideo(videoId);
     });
 
     const results = await Promise.all(videoPromises);
-    const validVideos = results.filter(video => video !== null);
+    const validVideos = results.filter((video) => video !== null);
 
-    console.log(`Successfully fetched ${validVideos.length} out of ${videoIds.length} videos`);
-    
+    console.log(
+      `Successfully fetched ${validVideos.length} out of ${videoIds.length} videos`,
+    );
+
     res.json({
       success: true,
       videos: validVideos,
       totalFetched: validVideos.length,
-      totalRequested: videoIds.length
+      totalRequested: videoIds.length,
     });
-
   } catch (error) {
-    console.error('Error in getVimeoVideos:', error);
+    console.error("Error in getVimeoVideos:", error);
     res.status(500).json({
       success: false,
-      error: 'Failed to fetch video data',
-      message: error instanceof Error ? error.message : 'Unknown error'
+      error: "Failed to fetch video data",
+      message: error instanceof Error ? error.message : "Unknown error",
     });
   }
 };
@@ -164,35 +168,34 @@ export const getVimeoVideos: RequestHandler = async (req, res) => {
 export const getVimeoVideo: RequestHandler = async (req, res) => {
   try {
     const { videoId } = req.params;
-    
+
     if (!videoId) {
       return res.status(400).json({
         success: false,
-        error: 'Video ID is required'
+        error: "Video ID is required",
       });
     }
 
     console.log(`Fetching individual video: ${videoId}`);
     const video = await fetchVimeoVideo(videoId);
-    
+
     if (!video) {
       return res.status(404).json({
         success: false,
-        error: 'Video not found or failed to fetch'
+        error: "Video not found or failed to fetch",
       });
     }
 
     res.json({
       success: true,
-      video
+      video,
     });
-
   } catch (error) {
     console.error(`Error fetching video ${req.params.videoId}:`, error);
     res.status(500).json({
       success: false,
-      error: 'Failed to fetch video data',
-      message: error instanceof Error ? error.message : 'Unknown error'
+      error: "Failed to fetch video data",
+      message: error instanceof Error ? error.message : "Unknown error",
     });
   }
 };

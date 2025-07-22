@@ -1,5 +1,14 @@
 import { useParams, Link } from "react-router-dom";
-import { ArrowLeft, Share2, ThumbsUp, Download, Clock, Eye, Calendar, Loader2 } from "lucide-react";
+import {
+  ArrowLeft,
+  Share2,
+  ThumbsUp,
+  Download,
+  Clock,
+  Eye,
+  Calendar,
+  Loader2,
+} from "lucide-react";
 import { useVimeoVideos } from "../hooks/useVimeoVideos";
 import { Button } from "../components/ui/button";
 import { Badge } from "../components/ui/badge";
@@ -14,13 +23,15 @@ export default function VideoPlayer() {
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center space-y-4">
           <Loader2 className="w-8 h-8 animate-spin text-okta-blue mx-auto" />
-          <h2 className="text-xl font-semibold text-foreground">Loading video...</h2>
+          <h2 className="text-xl font-semibold text-foreground">
+            Loading video...
+          </h2>
         </div>
       </div>
     );
   }
 
-  const video = videos.find(v => v.id === videoId);
+  const video = videos.find((v) => v.id === videoId);
 
   if (!video) {
     return (
@@ -37,17 +48,19 @@ export default function VideoPlayer() {
 
   // Related videos from same category
   const relatedVideos = videos
-    .filter(v => v.id !== video.id && v.category.id === video.category.id)
+    .filter((v) => v.id !== video.id && v.category.id === video.category.id)
     .slice(0, 6);
 
   return (
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        
         {/* Back Navigation */}
         <div className="mb-6">
           <Link to="/">
-            <Button variant="ghost" className="text-muted-foreground hover:text-foreground">
+            <Button
+              variant="ghost"
+              className="text-muted-foreground hover:text-foreground"
+            >
               <ArrowLeft className="w-4 h-4 mr-2" />
               Back to Home
             </Button>
@@ -55,10 +68,8 @@ export default function VideoPlayer() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          
           {/* Video Player Section */}
           <div className="lg:col-span-2">
-            
             {/* Video Player */}
             <div className="relative aspect-video bg-black rounded-lg overflow-hidden mb-6">
               <iframe
@@ -73,18 +84,18 @@ export default function VideoPlayer() {
 
             {/* Video Information */}
             <div className="space-y-6">
-              
               {/* Title and Category */}
               <div>
                 <div className="flex items-center gap-3 mb-3">
-                  <Badge 
-                    variant="outline" 
+                  <Badge
+                    variant="outline"
                     className={`border-none text-white font-medium ${
-                      video.category.color === 'okta-blue' && "bg-okta-blue",
-                      video.category.color === 'okta-green' && "bg-okta-green",
-                      video.category.color === 'primary' && "bg-primary",
-                      video.category.color === 'destructive' && "bg-destructive",
-                      video.category.color === 'secondary' && "bg-secondary"
+                      (video.category.color === "okta-blue" && "bg-okta-blue",
+                      video.category.color === "okta-green" && "bg-okta-green",
+                      video.category.color === "primary" && "bg-primary",
+                      video.category.color === "destructive" &&
+                        "bg-destructive",
+                      video.category.color === "secondary" && "bg-secondary")
                     }`}
                   >
                     {video.category.name}
@@ -111,7 +122,10 @@ export default function VideoPlayer() {
                 </div>
                 {video.presenter && (
                   <div>
-                    Presented by <span className="text-foreground font-medium">{video.presenter}</span>
+                    Presented by{" "}
+                    <span className="text-foreground font-medium">
+                      {video.presenter}
+                    </span>
                   </div>
                 )}
               </div>
@@ -134,7 +148,9 @@ export default function VideoPlayer() {
 
               {/* Description */}
               <div className="prose prose-invert max-w-none">
-                <h3 className="text-lg font-semibold text-foreground mb-3">About this video</h3>
+                <h3 className="text-lg font-semibold text-foreground mb-3">
+                  About this video
+                </h3>
                 <p className="text-muted-foreground leading-relaxed">
                   {video.description}
                 </p>
@@ -142,7 +158,9 @@ export default function VideoPlayer() {
 
               {/* Tags */}
               <div>
-                <h3 className="text-lg font-semibold text-foreground mb-3">Tags</h3>
+                <h3 className="text-lg font-semibold text-foreground mb-3">
+                  Tags
+                </h3>
                 <div className="flex flex-wrap gap-2">
                   {video.tags.map((tag) => (
                     <Badge key={tag} variant="secondary">
@@ -151,7 +169,6 @@ export default function VideoPlayer() {
                   ))}
                 </div>
               </div>
-
             </div>
           </div>
 
@@ -161,29 +178,29 @@ export default function VideoPlayer() {
               <h3 className="text-lg font-semibold text-foreground mb-4">
                 Video Details
               </h3>
-              
+
               <div className="space-y-4 text-sm">
                 <div>
                   <span className="text-muted-foreground">Department:</span>
-                  <div className="font-medium">{video.department || 'N/A'}</div>
+                  <div className="font-medium">{video.department || "N/A"}</div>
                 </div>
-                
+
                 <div>
                   <span className="text-muted-foreground">Category:</span>
                   <div className="font-medium">{video.category.name}</div>
                 </div>
-                
+
                 <div>
                   <span className="text-muted-foreground">Published:</span>
                   <div className="font-medium">
-                    {new Date(video.publishedAt).toLocaleDateString('en-US', {
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric'
+                    {new Date(video.publishedAt).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
                     })}
                   </div>
                 </div>
-                
+
                 <div>
                   <span className="text-muted-foreground">Duration:</span>
                   <div className="font-medium">{video.duration}</div>
@@ -191,19 +208,17 @@ export default function VideoPlayer() {
               </div>
             </div>
           </div>
-
         </div>
 
         {/* Related Videos */}
         {relatedVideos.length > 0 && (
           <div className="mt-12">
-            <VideoRow 
+            <VideoRow
               title={`More from ${video.category.name}`}
               videos={relatedVideos}
             />
           </div>
         )}
-
       </div>
     </div>
   );

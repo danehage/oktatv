@@ -57,6 +57,14 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        okta: {
+          blue: "hsl(var(--okta-blue))",
+          "blue-dark": "hsl(var(--okta-blue-dark))",
+          green: "hsl(var(--okta-green))",
+        },
+        video: {
+          overlay: "hsl(var(--video-overlay))",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",

@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
-import { Search, Play, User, Bell } from "lucide-react";
+import { Search, User, Bell } from "lucide-react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
+import { OktaLogo } from "./OktaLogo";
 
 export function Navigation() {
   return (

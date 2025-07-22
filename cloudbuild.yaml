@@ -39,6 +39,13 @@ steps:
 images:
 - '$_GCR_HOSTNAME/$PROJECT_ID/$_REPO_NAME/$_SERVICE_NAME:$COMMIT_SHA'
 
+# Add logging options to resolve the error
+options:
+  logging: CLOUD_LOGGING_ONLY # This tells Cloud Build to send logs to Google Cloud Logging
+
+# Define substitution variables. These will be automatically filled by Cloud Build or can be customized.
+# You MUST replace the placeholder values below with your actual information.
+
 # Define substitution variables. These will be automatically filled by Cloud Build or can be customized.
 # You MUST replace the placeholder values below with your actual information.
 substitutions:

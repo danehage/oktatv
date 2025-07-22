@@ -42,7 +42,7 @@ images:
 # Define substitution variables. These will be automatically filled by Cloud Build or can be customized.
 # You MUST replace the placeholder values below with your actual information.
 substitutions:
-  _GCR_HOSTNAME: <YOUR_ARTIFACT_REGISTRY_REGION>-docker.pkg.dev # Example: us-central1-docker.pkg.dev
-  _REPO_NAME: oktatv-app-repo # The name you choose for your Artifact Registry repository
-  _SERVICE_NAME: oktatv-web-app # The desired name for your Cloud Run service (e.g., your app's name)
-  _DEPLOY_REGION: <YOUR_ARTIFACT_REGISTRY_REGION> # The GCP region for your Cloud Run service (e.g., us-central1)
+  _GCR_HOSTNAME: us-east4-docker.pkg.dev # Example: us-central1-docker.pkg.dev
+  _REPO_NAME: oktatv # The name you choose for your Artifact Registry repository
+  _SERVICE_NAME: oktatv # The desired name for your Cloud Run service (e.g., your app's name)
+  _DEPLOY_REGION: us-east4 # The GCP region for your Cloud Run service (e.g., us-central1)

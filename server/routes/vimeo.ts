@@ -50,18 +50,27 @@ interface VimeoOEmbedData {
 // Fetch video data from Vimeo oembed API (public, no auth required)
 async function fetchVimeoVideo(videoId: string): Promise<VideoMetadata | null> {
   try {
-    // Try oembed API first (works for public videos)
-    const oembedUrl = `https://vimeo.com/api/oembed.json?url=https://vimeo.com/${videoId}`;
+    // Try oembed API first (works for public videos) - request higher res thumbnail
+    const oembedUrl = `https://vimeo.com/api/oembed.json?url=https://vimeo.com/${videoId}&width=800&height=450`;
     const oembedResponse = await fetch(oembedUrl);
 
     if (oembedResponse.ok) {
       const oembedData: VimeoOEmbedData = await oembedResponse.json();
 
+      // Get higher resolution thumbnail by modifying the URL
+      let thumbnail = oembedData.thumbnail_url || '';
+      if (thumbnail) {
+        // Replace the size parameters in Vimeo thumbnail URL for higher quality
+        thumbnail = thumbnail
+          .replace(/_\d+x\d+/, '_800x450')  // Replace size with 800x450
+          .replace(/\?.*$/, '');  // Remove query parameters that might limit quality
+      }
+
       return {
         id: videoId,
         title: oembedData.title || `Video ${videoId}`,
         description: oembedData.description || 'No description available.',
-        thumbnail: oembedData.thumbnail_url || '',
+        thumbnail: thumbnail,
         duration: formatDuration(oembedData.duration || 0),
         views: Math.floor(Math.random() * 1000) + 100, // Random views since oembed doesn't provide this
         publishedAt: oembedData.upload_date || new Date().toISOString().split('T')[0],

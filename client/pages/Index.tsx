@@ -1,8 +1,9 @@
 import { HeroSection } from "../components/HeroSection";
 import { VideoRow } from "../components/VideoRow";
+import { LoadingState } from "../components/LoadingState";
 import { categories, FeaturedVideo } from "../../shared/types";
 import { useVimeoVideos } from "../hooks/useVimeoVideos";
-import { Loader2, RefreshCw, AlertCircle } from "lucide-react";
+import { RefreshCw, AlertCircle } from "lucide-react";
 import { Button } from "../components/ui/button";
 
 export default function Index() {

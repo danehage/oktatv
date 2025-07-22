@@ -1,61 +1,58 @@
-import { DemoResponse } from "@shared/api";
-import { useEffect, useState } from "react";
+import { HeroSection } from "../components/HeroSection";
+import { VideoRow } from "../components/VideoRow";
+import { mockVideos, featuredVideo, categories } from "../../shared/types";
 
 export default function Index() {
-  const [exampleFromServer, setExampleFromServer] = useState("");
-  // Fetch users on component mount
-  useEffect(() => {
-    fetchDemo();
-  }, []);
+  // Group videos by category
+  const videosByCategory = categories.map(category => ({
+    category,
+    videos: mockVideos.filter(video => video.category.id === category.id)
+  })).filter(group => group.videos.length > 0);
 
-  // Example of how to fetch data from the server (if needed)
-  const fetchDemo = async () => {
-    try {
-      const response = await fetch("/api/demo");
-      const data = (await response.json()) as DemoResponse;
-      setExampleFromServer(data.message);
-    } catch (error) {
-      console.error("Error fetching hello:", error);
-    }
-  };
+  // Recent videos (all videos sorted by date)
+  const recentVideos = [...mockVideos].sort((a, b) =>
+    new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
+  );
+
+  // Popular videos (sorted by views)
+  const popularVideos = [...mockVideos].sort((a, b) => b.views - a.views);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-100 to-slate-200">
-      <div className="text-center">
-        {/* TODO: FUSION_GENERATION_APP_PLACEHOLDER replace everything here with the actual app! */}
-        <h1 className="text-2xl font-semibold text-slate-800 flex items-center justify-center gap-3">
-          <svg
-            className="animate-spin h-8 w-8 text-slate-400"
-            viewBox="0 0 50 50"
-          >
-            <circle
-              className="opacity-30"
-              cx="25"
-              cy="25"
-              r="20"
-              stroke="currentColor"
-              strokeWidth="5"
-              fill="none"
-            />
-            <circle
-              className="text-slate-600"
-              cx="25"
-              cy="25"
-              r="20"
-              stroke="currentColor"
-              strokeWidth="5"
-              fill="none"
-              strokeDasharray="100"
-              strokeDashoffset="75"
-            />
-          </svg>
-          Generating your app...
-        </h1>
-        <p className="mt-4 text-slate-600 max-w-md">
-          Watch the chat on the left for updates that might need your attention
-          to finish generating
-        </p>
-        <p className="mt-4 hidden max-w-md">{exampleFromServer}</p>
+    <div className="min-h-screen bg-background">
+      {/* Hero Section */}
+      <HeroSection featuredVideo={featuredVideo} />
+
+      {/* Video Content Sections */}
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12">
+
+        {/* Recently Added */}
+        <VideoRow
+          title="Recently Added"
+          videos={recentVideos}
+        />
+
+        {/* Popular This Week */}
+        <VideoRow
+          title="Popular This Week"
+          videos={popularVideos}
+        />
+
+        {/* Category Sections */}
+        {videosByCategory.map(({ category, videos }) => (
+          <VideoRow
+            key={category.id}
+            title={category.name}
+            videos={videos}
+            category={category}
+          />
+        ))}
+
+        {/* Continue Watching (placeholder for future implementation) */}
+        <VideoRow
+          title="Continue Watching"
+          videos={mockVideos.slice(0, 3)}
+        />
+
       </div>
     </div>
   );

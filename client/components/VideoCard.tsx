@@ -35,6 +35,12 @@ export function VideoCard({ video, size = "medium" }: VideoCardProps) {
             src={video.thumbnail}
             alt={video.title}
             className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+            loading="lazy"
+            onError={(e) => {
+              // Fallback to a high-quality placeholder if thumbnail fails
+              const target = e.target as HTMLImageElement;
+              target.src = `https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=800&h=450&fit=crop&q=80`;
+            }}
           />
           
           {/* Gradient Overlay */}
